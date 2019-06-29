@@ -1,22 +1,30 @@
-var express = require('express');
-var router = express.Router();
-var axios = require('axios');
+const express = require('express');
+const router = express.Router();
+const axios = require('axios');
+const cheerio = require('cheerio');
+const db = require('../models');
+
 
 router.get('/', (req, res) => res.render('index'));
 
 router.get('/scrape', (req, res) => {
-    axios.get('https://www.techradar.com/').then((response) => {
+    axios.get('https://www.techradar.com/news').then((response) => {
         var $ = cheerio.load(response.data);
 
-        $('.article-link').each((i, element) => {
+        $('.listingResult').each(function(i, element) {
             var result = {};
 
-            result.title = $(this).find('.article-name').text;
-            result.url = $(this).attr('href');
+            console.log("-------------------------")
+            console.log($(this).children('a').attr('href'));
+            console.log($(this).find('.article-name').text());
+            console.log($(this).find('.synopsis').text());
 
-            db.Article.create(result)
-                .then((dbArticle) => console.log(dbArticle))
-                .catch((err) => console.log(err));
+            result.title = "title";
+            result.url = "url";
+
+            // db.Article.create(result)
+            //     .then((dbArticle) => console.log(dbArticle))
+            //     .catch((err) => console.log(err));
 
         })
 
