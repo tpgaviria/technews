@@ -18,6 +18,8 @@ app.set('view engine', 'handlebars');
 var routes = require('./controller/routes.js');
 app.use(routes);
 
-mongoose.connect('mongodb://localhost/technews', { useNewUrlParser: true });
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/technews"
+
+mongoose.connect(MONGO_URI);
 
 app.listen(PORT, () => console.log(`App running on port ${PORT}`));
